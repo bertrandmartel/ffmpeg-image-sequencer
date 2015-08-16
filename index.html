@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Ffmpeg-image-sequencer by akinaru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Ffmpeg-image-sequencer</h1>
+      <h2 class="project-tagline">Create video from image and append images to videos using ffmpeg</h2>
+      <a href="https://github.com/akinaru/ffmpeg-image-sequencer" class="btn">View on GitHub</a>
+      <a href="https://github.com/akinaru/ffmpeg-image-sequencer/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/akinaru/ffmpeg-image-sequencer/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="ffmpeg-image-video-sequencer" class="anchor" href="#ffmpeg-image-video-sequencer" aria-hidden="true"><span class="octicon octicon-link"></span></a>FFmpeg image video sequencer</h1>
+
+<p><b>Create videos from image and append images to existing videos using ffmpeg</b></p>
+
+<p>Project is available in Linux Bash script and in Python script</p>
+
+<p>ffmpeg 2.1+ is required</p>
+
+<h3>
+<a id="bash" class="anchor" href="#bash" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bash</h3>
+
+<p>create video from image or append image to video : </p>
+
+<p><code>./ffmpeg-image-sequencer.sh -i file1:file2:file3 -f &lt;path_to_video_output&gt;</code></p>
+
+<p><i>Video must be encoded in mjpeg or mpeg4</i>
+<i>path_to_video_output may already exists if that is the case the image are appended to it (if the video format is correct)</i></p>
+
+<h4>
+<a id="exemple" class="anchor" href="#exemple" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exemple</h4>  
+
+<p><code>./ffmpeg-image-sequencer.sh -i ./image/picture1.jpg</code></p>
+
+<p>This will create a MPEG4 video showing picutre1.jpg during 1 second</p>
+
+<p><code>./ffmpeg-image-sequencer.sh -i ./image/picture2.jpg -f video2.mpeg</code></p>
+
+<p>This will append picture2.jpg to video2.mpeg</p>
+
+<h4>
+<a id="testing-script" class="anchor" href="#testing-script" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing script</h4>  
+
+<p><code>./ffmpeg-appender_test.sh</code></p>
+
+<h3>
+<a id="python" class="anchor" href="#python" aria-hidden="true"><span class="octicon octicon-link"></span></a>Python</h3>
+
+<p>Testing script : <code>python ffmpeg-encoder_test.py</code></p>
+
+<h3>
+<a id="testing-script--what-does-it-do-" class="anchor" href="#testing-script--what-does-it-do-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing script : what does it do ?</h3>
+
+<ul>
+<li>download images from WEB</li>
+<li>create a video from image if no video existing</li>
+<li>create a video from image and append to existing video</li>
+</ul>
+
+<p>The output is a video created in output directory which contains all 4 images getting from websites and with 1 second of frame rate.</p>
+
+<h3>
+<a id="how-does-it-work-" class="anchor" href="#how-does-it-work-" aria-hidden="true"><span class="octicon octicon-link"></span></a>How does it work ?</h3>
+
+<p>You can use ffmpeg create your video and append JPG image to it. </p>
+
+<p>To create the video from an existing image :</p>
+
+<pre><code>ffmpeg -f image2 -pattern_type sequence -start_number 0 -r 1 -i $TEMPORARY_FILE_NAME.jpg -s 1920x1080 $TEMPORARY_FILE_NAME.avi
+</code></pre>
+
+<ul>
+<li>
+<code>-f image2</code> is Image file demuxer format</li>
+<li>
+<code>pattern_type sequence</code> is for sequential pattern</li>
+<li>
+<code>start_number</code> is the index of the sequence</li>
+<li>
+<code>-r 1</code> is the frame rate, I put it to 1 frame/s to have time to see each picture</li>
+<li>
+<code>-s 1920x1080</code> set the frame size</li>
+</ul>
+
+<p>To append an image to an existing a video, you will have to convert this image to a temporary video first, and then concat your former video to this newly created video. To concat videos :</p>
+
+<pre><code>ffmpeg -i "concat:$OUTPUT_FILE_NAME.avi|$TEMPORARY_FILE_NAME.avi" -c copy $TEMPORARY_FILE_NAME_VIDEO.avi
+</code></pre>
+
+<ul>
+<li>
+<code>-i "concat:$OUTPUT_FILE_NAME.avi|$TEMPORARY_FILE_NAME.avi"</code> take videos to concat, you can add more if you like between |</li>
+<li>
+<code>-c copy</code> will copy all video streams without reencoding </li>
+</ul>
+
+<p>You can find more information on ffmpg here <a href="https://ffmpeg.org/ffmpeg.html">https://ffmpeg.org/ffmpeg.html</a></p>
+
+<hr>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/akinaru/ffmpeg-image-sequencer">Ffmpeg-image-sequencer</a> is maintained by <a href="https://github.com/akinaru">akinaru</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
